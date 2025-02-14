@@ -1,0 +1,4 @@
+streamlit>=1.22.0
+googletrans==4.0.0-rc1
+SpeechRecognition
+pyaudio
