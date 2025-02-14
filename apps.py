@@ -1,3 +1,6 @@
+pip install streamlit
+pip install googletrans==4.0.0-rc1
+pip install SpeechRecognition
 import streamlit as st
 from googletrans import Translator
 
