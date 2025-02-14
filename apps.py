@@ -1,5 +1,6 @@
 import streamlit as st
 from googletrans import Translator
+
 import speech_recognition as sr
 
 def translate_text(text, src_lang, dest_lang="en"):
