@@ -26,20 +26,20 @@ def main():
     src_lang = st.selectbox(
         "Select your native language:",
         [
-            "hi",  # Hindi
-            "te",  # Telugu
-            "ta",  # Tamil
-            "kn",  # Kannada
-            "ml",  # Malayalam
-            "mr",  # Marathi
-            "bn",  # Bengali
-            "gu",  # Gujarati
-            "pa",  # Punjabi
-            "ur",  # Urdu
-            "es",  # Spanish
-            "fr",  # French
-            "de",  # German
-            "zh-cn",  # Chinese (Simplified)
+            "hindi",  # Hindi
+            "telugu",  # Telugu
+            "tamil",  # Tamil
+            "kanada",  # Kannada
+            "malayalam",  # Malayalam
+            "marathi",  # Marathi
+            "bengali",  # Bengali
+            "gujarthi",  # Gujarati
+            "punjab",  # Punjabi
+            "urdu",  # Urdu
+            "panish",  # Spanish
+            "french",  # French
+            "german",  # German
+            "chinese",  # Chinese (Simplified)
         ],
     )
 
