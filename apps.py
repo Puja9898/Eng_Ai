@@ -1,43 +1,32 @@
-pip install streamlit
-pip install googletrans==4.0.0-rc1
-pip install SpeechRecognition
 import streamlit as st
 from googletrans import Translator
-
 import speech_recognition as sr
 
+# Function to translate text
 def translate_text(text, src_lang, dest_lang="en"):
     translator = Translator()
     translation = translator.translate(text, src=src_lang, dest=dest_lang)
     return translation.text
 
-def speech_to_text():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        st.write("Speak now...")
-        audio = recognizer.listen(source)
-        try:
-            text = recognizer.recognize_google(audio)
-            return text
-        except sr.UnknownValueError:
-            st.error("Sorry, I could not understand the audio.")
-        except sr.RequestError:
-            st.error("Sorry, there was an issue with the speech recognition service.")
-    return None
+# Streamlit app
+def main():
+    st.title("English Teaching AI 🎓")
 
-st.title("English Teaching AI")
-input_method = st.radio("Choose input method:", ("Text", "Microphone"))
+    # Input method selection
+    input_method = st.radio("Choose input method:", ("Text", "Microphone"))
 
-user_input = ""
-if input_method == "Text":
-    user_input = st.text_area("Enter text in your native language:")
-else:
-    if st.button("Start Recording"):
-        user_input = speech_to_text()
-        if user_input:
-            st.write("You said:", user_input)
+    # User input
+    user_input = ""
+    if input_method == "Text":
+        user_input = st.text_area("Enter text in your native language:")
+    else:
+        st.warning("Microphone input is not supported in this environment. Please use text input.")
 
-src_lang = st.selectbox("Select your native language:", ["hi",  # Hindi
+    # Language selection
+    src_lang = st.selectbox(
+        "Select your native language:",
+        [
+            "hi",  # Hindi
             "te",  # Telugu
             "ta",  # Tamil
             "kn",  # Kannada
@@ -50,11 +39,19 @@ src_lang = st.selectbox("Select your native language:", ["hi",  # Hindi
             "es",  # Spanish
             "fr",  # French
             "de",  # German
-            "zh-cn"])
+            "zh-cn",  # Chinese (Simplified)
+        ],
+    )
 
-if st.button("Translate to English"):
-    if user_input:
-        translated_text = translate_text(user_input, src_lang)
-        st.write("Translated Text:", translated_text)
-    else:
-        st.warning("Please provide input text or use the microphone to speak.")
+    # Translate button
+    if st.button("Translate to English"):
+        if user_input:
+            translated_text = translate_text(user_input, src_lang)
+            st.success("Translated Text:")
+            st.write(translated_text)
+        else:
+            st.warning("Please provide input text.")
+
+# Run the app
+if __name__ == "__main__":
+    main()
