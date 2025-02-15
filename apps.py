@@ -7,43 +7,30 @@ import os
 st.markdown(
     """
     <style>
-    .main {
-        background-color: #f0f2f6;
+    .stApp {
+        background-color: #eef2f3;
     }
-    h1 {
-        color: #1f77b4;
+    .title {
         text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #1f77b4;
     }
-    .stButton button {
-        background-color: #4CAF50;
-        color: white;
-        border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-    .stButton button:hover {
-        background-color: #45a049;
-    }
-    .stTextArea textarea {
-        border-radius: 5px;
-        border: 1px solid #ccc;
+    .button {
+        background-color: #007bff !important;
+        color: white !important;
+        font-size: 18px;
         padding: 10px;
-    }
-    .stFileUploader div {
         border-radius: 5px;
-        border: 1px solid #ccc;
-        padding: 10px;
     }
-    .stSelectbox div {
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        padding: 10px;
-    }
-    .stSuccess {
+    .success {
         color: #28a745;
+        font-size: 18px;
+        font-weight: bold;
     }
-    .stWarning {
+    .warning {
         color: #dc3545;
+        font-size: 18px;
     }
     </style>
     """,
@@ -62,92 +49,42 @@ def audio_to_text(audio_file):
     with sr.AudioFile(audio_file) as source:
         audio = recognizer.record(source)
         try:
-            text = recognizer.recognize_google(audio)
-            return text
+            return recognizer.recognize_google(audio)
         except sr.UnknownValueError:
-            st.error("Sorry, I could not understand the audio.")
+            st.error("Could not understand the audio.")
         except sr.RequestError:
-            st.error("Sorry, there was an issue with the speech recognition service.")
+            st.error("Speech recognition service error.")
     return None
 
 # Streamlit app
 def main():
-    # App title
-    st.markdown("<h1>🎤 English Teaching AI 🎓</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='title'>🎤 English Teaching AI 🎓</h1>", unsafe_allow_html=True)
+    
+    # Sidebar for language selection
+    st.sidebar.header("🌍 Language Selection")
+    src_lang = st.sidebar.selectbox("Source Language", ["en", "hi", "te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "ur", "es", "fr", "de", "zh-cn"], index=0)
+    dest_lang = st.sidebar.selectbox("Target Language", ["en", "hi", "te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "ur", "es", "fr", "de", "zh-cn"], index=1)
 
     # Input method selection
     st.markdown("### 📝 Choose Input Method")
-    input_method = st.radio("", ("Text", "Audio File"), horizontal=True)
-
-    # User input
+    input_method = st.radio("Select Input Method", ("Text", "Audio File"), horizontal=True)
+    
     user_input = ""
     if input_method == "Text":
-        st.markdown("### 📖 Enter Text")
-        user_input = st.text_area("", placeholder="Type your text here...")
+        user_input = st.text_area("Enter Text", placeholder="Type your text here...")
     else:
-        st.markdown("### 🎧 Upload Audio File")
-        audio_file = st.file_uploader("", type=["wav"])
+        audio_file = st.file_uploader("Upload Audio File", type=["wav"])
         if audio_file:
-            # Save the uploaded file temporarily
             with open("temp_audio.wav", "wb") as f:
                 f.write(audio_file.getvalue())
-            # Convert audio to text
             user_input = audio_to_text("temp_audio.wav")
             if user_input:
-                st.markdown("### 🗣️ You Said:")
+                st.markdown("### 🗣️ Detected Speech:")
                 st.write(user_input)
-            # Clean up the temporary file
             os.remove("temp_audio.wav")
-
-    # Language selection
-    st.markdown("### 🌍 Select Languages")
-    col1, col2 = st.columns(2)
-    with col1:
-        src_lang = st.selectbox(
-            "Source Language",
-            [
-                "hindi",  # Hindi
-            "telugu",  # Telugu
-            "tamil",  # Tamil
-            "kanada",  # Kannada
-            "malayalam",  # Malayalam
-            "marathi",  # Marathi
-            "bengali",  # Bengali
-            "gujarati",  # Gujarati
-            "punjabi",  # Punjabi
-            "urdu",  # Urdu
-            "spanish",  # Spanish
-            "french",  # French
-            "german",  # German
-            "chinese",  # Chinese (Simplified)
-
-            ],
-        )
-    with col2:
-        dest_lang = st.selectbox(
-            "Target Language",
-            [
-                "hindi",  # Hindi
-            "telugu",  # Telugu
-            "tamil",  # Tamil
-            "kanada",  # Kannada
-            "malayalam",  # Malayalam
-            "marathi",  # Marathi
-            "bengali",  # Bengali
-            "gujarati",  # Gujarati
-            "punjabi",  # Punjabi
-            "urdu",  # Urdu
-            "spanish",  # Spanish
-            "french",  # French
-            "german",  # German
-            "chinese",  # Chinese (Simplified)
-
-            ],
-        )
-
+    
     # Translate button
-    st.markdown("### 🔄 Translate")
-    if st.button("Translate"):
+    if st.button("Translate", key="translate_button", help="Click to translate the text/audio"):
         if user_input:
             translated_text = translate_text(user_input, src_lang, dest_lang)
             st.markdown("### 🎉 Translated Text:")
@@ -155,6 +92,5 @@ def main():
         else:
             st.warning("Please provide input text or upload an audio file.")
 
-# Run the app
 if __name__ == "__main__":
     main()
