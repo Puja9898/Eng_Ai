@@ -104,19 +104,19 @@ def main():
     src_lang = st.selectbox(
         "",
         [
-              " Hindi"
-              " Telugu"
-              " Tamil"
-              " Kannada
-              " Malayalam
-              " Marathi
-              " Bengali
-              " Gujarati
-              " Punjabi
-              " Urdu
-              "Spanish
-              " French
-              " German
+              " Hindi",
+              " Telugu",
+              " Tamil",
+              " Kannada",
+              " Malayalam",
+              " Marathi",
+              " Bengali",
+              " Gujarati",
+              " Punjabi",
+              " Urdu",
+              "Spanish",
+              " French",
+              " German",
             "chinese",  
         ],
     )
