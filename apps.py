@@ -8,13 +8,13 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f8f9fa;
+        background-color: "black";
     }
     .title {
         text-align: center;
         font-size: 28px;
         font-weight: bold;
-        color: #dc3545;
+        color: #ffffff;
     }
     .button {
         background-color: #28a745 !important;
