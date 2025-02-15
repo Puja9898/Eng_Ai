@@ -3,8 +3,55 @@ from googletrans import Translator
 import speech_recognition as sr
 import os
 
+# Custom CSS for styling
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #f0f2f6;
+    }
+    h1 {
+        color: #1f77b4;
+        text-align: center;
+    }
+    .stButton button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .stButton button:hover {
+        background-color: #45a049;
+    }
+    .stTextArea textarea {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .stFileUploader div {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .stSelectbox div {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .stSuccess {
+        color: #28a745;
+    }
+    .stWarning {
+        color: #dc3545;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Function to translate text
-def translate_text(text, src_lang, dest_lang="en"):
+def translate_text(text, src_lang, dest_lang):
     translator = Translator()
     translation = translator.translate(text, src=src_lang, dest=dest_lang)
     return translation.text
@@ -25,17 +72,21 @@ def audio_to_text(audio_file):
 
 # Streamlit app
 def main():
-    st.title("English Teaching AI 🎓")
+    # App title
+    st.markdown("<h1>🎤 English Teaching AI 🎓</h1>", unsafe_allow_html=True)
 
     # Input method selection
-    input_method = st.radio("Choose input method:", ("Text", "Audio File"))
+    st.markdown("### 📝 Choose Input Method")
+    input_method = st.radio("", ("Text", "Audio File"), horizontal=True)
 
     # User input
     user_input = ""
     if input_method == "Text":
-        user_input = st.text_area("Enter text in your native language:")
+        st.markdown("### 📖 Enter Text")
+        user_input = st.text_area("", placeholder="Type your text here...")
     else:
-        audio_file = st.file_uploader("Upload an audio file", type=["wav"])
+        st.markdown("### 🎧 Upload Audio File")
+        audio_file = st.file_uploader("", type=["wav"])
         if audio_file:
             # Save the uploaded file temporarily
             with open("temp_audio.wav", "wb") as f:
@@ -43,15 +94,19 @@ def main():
             # Convert audio to text
             user_input = audio_to_text("temp_audio.wav")
             if user_input:
-                st.write("You said:", user_input)
+                st.markdown("### 🗣️ You Said:")
+                st.write(user_input)
             # Clean up the temporary file
             os.remove("temp_audio.wav")
 
     # Language selection
-    src_lang = st.selectbox(
-        "Select your native language:",
-        [
-            "hindi",  # Hindi
+    st.markdown("### 🌍 Select Languages")
+    col1, col2 = st.columns(2)
+    with col1:
+        src_lang = st.selectbox(
+            "Source Language",
+            [
+                "hindi",  # Hindi
             "telugu",  # Telugu
             "tamil",  # Tamil
             "kanada",  # Kannada
@@ -65,15 +120,38 @@ def main():
             "french",  # French
             "german",  # German
             "chinese",  # Chinese (Simplified)
-        ],
-    )
+
+            ],
+        )
+    with col2:
+        dest_lang = st.selectbox(
+            "Target Language",
+            [
+                "hindi",  # Hindi
+            "telugu",  # Telugu
+            "tamil",  # Tamil
+            "kanada",  # Kannada
+            "malayalam",  # Malayalam
+            "marathi",  # Marathi
+            "bengali",  # Bengali
+            "gujarati",  # Gujarati
+            "punjabi",  # Punjabi
+            "urdu",  # Urdu
+            "spanish",  # Spanish
+            "french",  # French
+            "german",  # German
+            "chinese",  # Chinese (Simplified)
+
+            ],
+        )
 
     # Translate button
-    if st.button("Translate to English"):
+    st.markdown("### 🔄 Translate")
+    if st.button("Translate"):
         if user_input:
-            translated_text = translate_text(user_input, src_lang)
-            st.success("Translated Text:")
-            st.write(translated_text)
+            translated_text = translate_text(user_input, src_lang, dest_lang)
+            st.markdown("### 🎉 Translated Text:")
+            st.success(translated_text)
         else:
             st.warning("Please provide input text or upload an audio file.")
 
