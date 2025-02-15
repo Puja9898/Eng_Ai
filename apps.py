@@ -1,6 +1,7 @@
 import streamlit as st
 from googletrans import Translator
 import speech_recognition as sr
+import os
 
 # Function to translate text
 def translate_text(text, src_lang, dest_lang="en"):
@@ -8,19 +9,43 @@ def translate_text(text, src_lang, dest_lang="en"):
     translation = translator.translate(text, src=src_lang, dest=dest_lang)
     return translation.text
 
+# Function to convert audio file to text
+def audio_to_text(audio_file):
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_file) as source:
+        audio = recognizer.record(source)
+        try:
+            text = recognizer.recognize_google(audio)
+            return text
+        except sr.UnknownValueError:
+            st.error("Sorry, I could not understand the audio.")
+        except sr.RequestError:
+            st.error("Sorry, there was an issue with the speech recognition service.")
+    return None
+
 # Streamlit app
 def main():
     st.title("English Teaching AI 🎓")
 
     # Input method selection
-    input_method = st.radio("Choose input method:", ("Text", "Microphone"))
+    input_method = st.radio("Choose input method:", ("Text", "Audio File"))
 
     # User input
     user_input = ""
     if input_method == "Text":
         user_input = st.text_area("Enter text in your native language:")
     else:
-        st.warning("Microphone input is not supported in this environment. Please use text input.")
+        audio_file = st.file_uploader("Upload an audio file", type=["wav"])
+        if audio_file:
+            # Save the uploaded file temporarily
+            with open("temp_audio.wav", "wb") as f:
+                f.write(audio_file.getvalue())
+            # Convert audio to text
+            user_input = audio_to_text("temp_audio.wav")
+            if user_input:
+                st.write("You said:", user_input)
+            # Clean up the temporary file
+            os.remove("temp_audio.wav")
 
     # Language selection
     src_lang = st.selectbox(
@@ -50,8 +75,8 @@ def main():
             st.success("Translated Text:")
             st.write(translated_text)
         else:
-            st.warning("Please provide input text.")
+            st.warning("Please provide input text or upload an audio file.")
 
 # Run the app
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
