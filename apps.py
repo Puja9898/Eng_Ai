@@ -63,6 +63,7 @@ def main():
     # Sidebar for language selection
     st.sidebar.header("🌍 Language Selection")
     src_lang = st.sidebar.selectbox("Source Language", [
+            "English",
              "hindi",  # Hindi
             "telugu",  # Telugu
             "tamil",  # Tamil
@@ -79,6 +80,7 @@ def main():
             "chinese",  # Chinese (Simplified)
 ], index=0)
     dest_lang = st.sidebar.selectbox("Target Language", [
+            "English"
             "hindi",  # Hindi
             "telugu",  # Telugu
             "tamil",  # Tamil
