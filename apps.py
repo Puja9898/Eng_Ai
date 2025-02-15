@@ -62,8 +62,38 @@ def main():
     
     # Sidebar for language selection
     st.sidebar.header("🌍 Language Selection")
-    src_lang = st.sidebar.selectbox("Source Language", ["en", "hi", "te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "ur", "es", "fr", "de", "zh-cn"], index=0)
-    dest_lang = st.sidebar.selectbox("Target Language", ["en", "hi", "te", "ta", "kn", "ml", "mr", "bn", "gu", "pa", "ur", "es", "fr", "de", "zh-cn"], index=1)
+    src_lang = st.sidebar.selectbox("Source Language", [
+             "hindi",  # Hindi
+            "telugu",  # Telugu
+            "tamil",  # Tamil
+            "kanada",  # Kannada
+            "malayalam",  # Malayalam
+            "marathi",  # Marathi
+            "bengali",  # Bengali
+            "gujarati",  # Gujarati
+            "punjabi",  # Punjabi
+            "urdu",  # Urdu
+            "spanish",  # Spanish
+            "french",  # French
+            "german",  # German
+            "chinese",  # Chinese (Simplified)
+], index=0)
+    dest_lang = st.sidebar.selectbox("Target Language", [
+            "hindi",  # Hindi
+            "telugu",  # Telugu
+            "tamil",  # Tamil
+            "kanada",  # Kannada
+            "malayalam",  # Malayalam
+            "marathi",  # Marathi
+            "bengali",  # Bengali
+            "gujarati",  # Gujarati
+            "punjabi",  # Punjabi
+            "urdu",  # Urdu
+            "spanish",  # Spanish
+            "french",  # French
+            "german",  # German
+            "chinese",  # Chinese (Simplified)
+], index=1)
 
     # Input method selection
     st.markdown("### 📝 Choose Input Method")
