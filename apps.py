@@ -58,7 +58,7 @@ def audio_to_text(audio_file):
 
 # Streamlit app
 def main():
-    st.markdown("<h1 class='title'>🎤 English Teaching AI 🎓</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='title'>🌍 EasyTranslate 🎓</h1>", unsafe_allow_html=True)
     
     # Sidebar for language selection
     st.sidebar.header("🌍 Language Selection")
